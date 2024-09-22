@@ -62,7 +62,7 @@ jobs:
       id: draft_release
       # TODO: This action is no longer mainained. We should use a different action
       # or the gh command line directly.
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v1
       with:
         release_name: "Shipwright Build release ${{ inputs.release }}"
         tag_name: ${{ inputs.release }}
