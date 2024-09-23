@@ -79,7 +79,7 @@ jobs:
     - name: Draft release
       id: draft_release
       uses: softprops/action-gh-release@v2
-      if: startsWith(github.ref, 'refs/tags/')
+      if: ${{ inputs.release != '' }}
       with:
         tag_name: ${{ inputs.release }}
         name: "Shipwright Build release ${{ inputs.release }}"
