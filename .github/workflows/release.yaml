@@ -58,23 +58,37 @@ jobs:
         export PREVIOUS_TAG
         "${GITHUB_WORKSPACE}/.github/draft_release_notes.sh"
 
+    # - name: Draft release
+    #   id: draft_release
+    #   # TODO: This action is no longer mainained. We should use a different action
+    #   # or the gh command line directly.
+    #   uses: softprops/action-gh-release@v1
+    #   with:
+    #     release_name: "Shipwright Build release ${{ inputs.release }}"
+    #     tag_name: ${{ inputs.release }}
+    #     body_path: Changes.md
+    #     draft: true
+    #     prerelease: true
+    #     # create-release assumes one of two things if commitish is not set
+    #     # 1. Release is from the "latest commit" on the repo's default branch.
+    #     # 2. Release is for an existing tag with the same name
+    #     commitish: ${{ inputs.git-ref }}
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
     - name: Draft release
       id: draft_release
-      # TODO: This action is no longer mainained. We should use a different action
-      # or the gh command line directly.
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
       with:
-        release_name: "Shipwright Build release ${{ inputs.release }}"
         tag_name: ${{ inputs.release }}
+        name: "Shipwright Build release ${{ inputs.release }}"
         body_path: Changes.md
         draft: true
         prerelease: true
-        # create-release assumes one of two things if commitish is not set
-        # 1. Release is from the "latest commit" on the repo's default branch.
-        # 2. Release is for an existing tag with the same name
-        commitish: ${{ inputs.git-ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
     - name: Generate and upload release.yaml
       env:
